@@ -61,6 +61,10 @@ def create_calendar_event(summary: str, start_time: str, end_time: str = None):
     end_time is optional, defaults to 1 hour after start.
     """
     try:
+        # Check if credentials exist (not available on Streamlit Cloud)
+        if not os.path.exists('credentials.json') and not os.path.exists('token.pickle'):
+            return f"✅ Meeting '{summary}' noted for {start_time} Almaty time! (Google Calendar integration requires local setup with credentials.json)"
+
         print(f"DEBUG received: start={start_time}, end={end_time}")
 
         def fix_time(t):
@@ -130,7 +134,8 @@ tools = [tavily_tool, arxiv_tool, create_calendar_event, search_course_materials
 
 llm = ChatOpenAI(
     model="gpt-4o",
-    temperature=0.2
+    temperature=0.2,
+    max_tokens=4000
 )
 
 # ---- Prompt ----
@@ -155,6 +160,11 @@ prompt = ChatPromptTemplate.from_messages([
     RAG RULES:
     - If the student asks about course content, lectures, or curriculum, ALWAYS use the search_course_materials tool first.
     - Combine course material results with ArXiv papers for comprehensive answers.
+
+    RESPONSE RULES:
+    - For academic/technical questions provide DETAILED and COMPREHENSIVE answers.
+    - Always write at least 3-5 sentences for each section.
+    - Only use the structured format below for academic or technical questions.
 
     For academic/technical questions follow this structure:
     {format_instructions}
