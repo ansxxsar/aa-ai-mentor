@@ -1,6 +1,6 @@
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import SKLearnVectorStore
 from langchain_openai import OpenAIEmbeddings
 from langchain.tools import tool
 import tempfile
@@ -24,12 +24,7 @@ def process_pdf(uploaded_file):
         chunk_overlap=50
     )
     chunks = splitter.split_documents(pages)
-
-    vectorstore = Chroma.from_documents(
-        chunks,
-        embeddings,
-        persist_directory="./chroma_db"
-    )
+    vectorstore = SKLearnVectorStore.from_documents(chunks, embeddings)
 
     os.unlink(tmp_path)
     return len(chunks)
