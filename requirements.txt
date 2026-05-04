@@ -14,3 +14,4 @@ google-auth-oauthlib
 google-auth-httplib2
 pypdf
 reportlab
+scikit-learn
