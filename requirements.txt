@@ -1,8 +1,8 @@
 langchain==0.3.20
-langchain-openai
-langchain-community
-langchain-core
-langchain-text-splitters
+langchain-openai==0.3.35
+langchain-community==0.3.20
+langchain-core==0.3.84
+langchain-text-splitters==0.3.11
 streamlit
 openai
 arxiv
@@ -12,7 +12,5 @@ python-dotenv
 google-api-python-client
 google-auth-oauthlib
 google-auth-httplib2
-chromadb
 pypdf
 reportlab
-sentence-transformers
